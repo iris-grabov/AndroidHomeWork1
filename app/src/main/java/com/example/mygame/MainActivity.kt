@@ -101,30 +101,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    private fun startLoop() {
-//        handler.postDelayed(object : Runnable{
-//            override private fun run() {
-//                val gameOver = refreshUI()
-//                if (!gameOver) {
-//                    handler.postDelayed(this, 1000)
-//                }
-//            }
-//        }, 1000)
-//    }
-
     private fun startLoop() {
-        lifecycleScope.launch {
-            while (!gameManager.isGameOver) {
-                refreshUI()
-                delay(Constants.Timer.DELAY)
+        handler.postDelayed(object : Runnable{
+            override fun run() {
+                val gameOver = refreshUI()
+                if (!gameOver) {
+                    handler.postDelayed(this, Constants.Timer.DELAY)
+                }
             }
-        }
+        }, Constants.Timer.DELAY)
     }
 
-    override fun onStop() {
-        super.onStop()
-
-    }
 
     private fun createObstacle() {
         val column = Random.nextInt(totalColumns)
