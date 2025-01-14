@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">mygame</string>
+    <string name="first_button_text">Slow</string>
+    <string name="second_button_text">Fast</string>
+    <string name="sensor">Sensors</string>
+    <string name="buttons">Buttons</string>
+    <string name="play_the_game">Play the game</string>
+    <string name="go_to_record_screen">Go to record screen</string>
+    <string name="menu">Menu:</string>
 </resources>

@@ -12,4 +12,8 @@ class Constants {
     object Timer {
         const val DELAY = 1000L
     }
+
+    object SP_keys{
+        const val HIGH_SCORE_KEY: String = "HIGH_SCORE_KEY"
+    }
 }

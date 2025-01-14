@@ -7,6 +7,7 @@ android {
     namespace = "com.example.mygame"
     compileSdk = 35
 
+
     defaultConfig {
         applicationId = "com.example.mygame"
         minSdk = 24
@@ -45,4 +46,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation (libs.gson)
+    implementation (libs.playServicesLocation)
+    implementation (libs.playServicesMaps)
+
+
 }

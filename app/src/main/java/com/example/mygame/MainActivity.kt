@@ -1,29 +1,26 @@
 package com.example.mygame
 
+import TiltDetector
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.mygame.logic.GameManager
 import com.example.mygame.utilities.Constants
 import com.example.mygame.utilities.SignalManager
 import com.google.android.material.textview.MaterialTextView
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.mygame.utilities.SingleSoundPlayer
+import dev.tomco.a25a_10357_l07.interfaces.TiltCallback
+
 import kotlin.random.Random
 
 
@@ -39,12 +36,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gameManager: GameManager
     private lateinit var main_LBL_score: MaterialTextView
 
-    private val totalRows = 6
-    private val totalColumns = 3
+    private val totalRows = 9
+    private val totalColumns = 5
     private var harryColumn = 1
+    private lateinit var tiltDetector: TiltDetector
 
 
     private val handler = Handler(Looper.getMainLooper())
+
+    private var obstacleCreationInterval = true // Default interval
+    private var isButton= true // Default control mode
 
     override  fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,13 +56,33 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        // Retrieve extras from Intent
+        obstacleCreationInterval = intent.getBooleanExtra("SELECTED_SPEED", true)
+        isButton = intent.getBooleanExtra("SELECTED_MODE" , true)
 
         SignalManager.init(this)
+        initTiltDetector()
+
         findViews()
         gameManager= GameManager(main_IMG_lifes.size)
         initViews()
-        showImage(totalRows - 1, harryColumn)
+        showHarryImage(totalRows - 1, harryColumn)
+
         startLoop()
+
+    }
+    override fun onResume() {
+        super.onResume()
+        if (!isButton) {
+            tiltDetector.start()
+        } else {
+            tiltDetector.stop()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        tiltDetector.stop()
     }
 
     private fun findViews() {
@@ -78,20 +99,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         main_LBL_score.text = gameManager.score.toString()
-        main_leftButton.setOnClickListener {
-            if (harryColumn > 0) {
-                hideImage(totalRows - 1, harryColumn)
-                harryColumn--
-                showImage(totalRows - 1, harryColumn)
-            }
-        }
 
-        main_rightButton.setOnClickListener {
-            if (harryColumn < totalColumns - 1) {
-                hideImage(totalRows - 1, harryColumn)
-                harryColumn++
-                showImage(totalRows - 1, harryColumn)
+        if(isButton) {
+            main_leftButton.setOnClickListener {
+                if (harryColumn > 0) {
+                    hideImage(totalRows - 1, harryColumn)
+                    harryColumn--
+                    showHarryImage(totalRows - 1, harryColumn)
+                }
             }
+
+            main_rightButton.setOnClickListener {
+                if (harryColumn < totalColumns - 1) {
+                    hideImage(totalRows - 1, harryColumn)
+                    harryColumn++
+                    showHarryImage(totalRows - 1, harryColumn)
+                }
+            }
+        }else{
+            main_rightButton.visibility = View.INVISIBLE
+            main_leftButton.visibility = View.INVISIBLE
+
         }
         for (i in 0 until totalRows) {
             for (j in 0 until totalColumns) {
@@ -114,8 +142,13 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun createObstacle() {
-        val column = Random.nextInt(totalColumns)
-        showImage(0, column)
+        val magicHatColumn = Random.nextInt(totalColumns)
+        var coinColumn = magicHatColumn
+        while (magicHatColumn == coinColumn) {
+            coinColumn = Random.nextInt(totalColumns)
+        }
+        showMagicHatImage(0, magicHatColumn)
+        showCoinImage(0, coinColumn)
     }
 
     private fun getCellImage(row: Int, column: Int): AppCompatImageView {
@@ -123,14 +156,28 @@ class MainActivity : AppCompatActivity() {
         return layout.getChildAt(column) as AppCompatImageView
     }
 
-    private fun showImage(row: Int, column: Int) {
+    private fun showMagicHatImage(row: Int, column: Int) {
         val image = getCellImage(row, column)
-        image.visibility = View.VISIBLE
+        image.setImageResource(R.drawable.magic_hat)
+        image.setTag(R.drawable.magic_hat)
+    }
+
+    private fun showCoinImage(row: Int, column: Int) {
+        val image = getCellImage(row, column)
+        image.setImageResource(R.drawable.coin)
+        image.setTag(R.drawable.coin)
+    }
+
+    private fun showHarryImage(row: Int, column: Int) {
+        val image = getCellImage(row, column)
+        image.setImageResource(R.drawable.harry_potter)
+        image.setTag(R.drawable.harry_potter)
     }
 
     private fun hideImage(row: Int, column: Int) {
         val image = getCellImage(row, column)
-        image.visibility = View.INVISIBLE
+        image.setImageResource(R.drawable.empty)
+        image.setTag(R.drawable.empty)
     }
 
     private  fun refreshUI(): Boolean {
@@ -141,7 +188,7 @@ class MainActivity : AppCompatActivity() {
             return true
         }
 
-        if (gameManager.shouldCreateObstacle()) {
+        if ( gameManager.shouldCreateObstacle(obstacleCreationInterval) ) {
             createObstacle()
         }
         gameManager.tick()
@@ -159,18 +206,29 @@ class MainActivity : AppCompatActivity() {
         for (i in totalRows - 2 downTo 0 ) {
             for (j in 0 until totalColumns) {
                 val cell = getCellImage(i, j)
-                if (cell.visibility == View.VISIBLE) {
-                    if ((i == totalRows - 2) && (getCellImage(i+1, j).visibility == View.VISIBLE)) {
+                val drawableType = cell.getTag()
+                if (drawableType != R.drawable.empty) {
+                    if ((i == totalRows - 2) && (getCellImage(i+1, j).getTag() == R.drawable.harry_potter)) {
                         // last obstacle's row and there's a harry beneath
-                        toastAndVibrate()
-                        gameManager.collide()
+                        if (drawableType == R.drawable.magic_hat) {
+                            toastAndVibrateAndSaund()
+                            gameManager.collide()
+                        } else {
+                            gameManager.increaseScore()
+                        }
                     } else {
                         if (i != totalRows - 2) {
                             // not last obstacle's row
-                            showImage(i + 1, j)
+                            if (drawableType == R.drawable.magic_hat) {
+                                showMagicHatImage(i + 1, j)
+                            } else {
+                                showCoinImage(i + 1, j)
+                            }
                         } else {
                             // last obstacle's row and there's no harry beneath
-                            gameManager.increaseScore()
+                            if (drawableType == R.drawable.magic_hat) {
+                                gameManager.increaseScore()
+                            }
                         }
                     }
                     hideImage(i, j)
@@ -178,6 +236,37 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun initTiltDetector() {
+        tiltDetector = TiltDetector(
+            context = this,
+            tiltCallback = object : TiltCallback {
+                override fun tiltX(x: Float) {
+                    val threshold = -1  // Define a sensitivity threshold for movement
+
+                    // Move based on the tilt value
+                    if (x < threshold && harryColumn < totalColumns - 1) {
+
+                        hideImage(totalRows - 1, harryColumn)
+                        harryColumn++
+                        showHarryImage(totalRows - 1, harryColumn)
+                    } else if (x > -threshold && harryColumn > 0) {
+                        hideImage(totalRows - 1, harryColumn)
+                        harryColumn--
+                        showHarryImage(totalRows - 1, harryColumn)
+                    }
+                }
+
+                override fun tiltY(y: Float) {
+                    // Optionally handle vertical movement (up/down)
+                    // For now, leave it empty if you're only handling horizontal tilt
+                }
+            }
+        )
+    }
+
+
+
 
     private  fun changeActivity(message: String, score: Int) {
         val intent = Intent(this, ScoreActivity::class.java)
@@ -189,8 +278,10 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
-    private  fun toastAndVibrate() {
+    private  fun toastAndVibrateAndSaund() {
         SignalManager.getInstance().toast("Slytherin!")
         SignalManager.getInstance().vibrate()
+        var ssp: SingleSoundPlayer = SingleSoundPlayer(this)
+        ssp.playSound(R.raw.boom)
     }
 }

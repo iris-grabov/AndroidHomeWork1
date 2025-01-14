@@ -3,7 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="domin_color">#EFBEFA</color>
+    <color name="icon_middle_color">#F3D2FA</color>
     <color name="background_color">#FFFFFFFF</color>
     <color name="life_color">#FFFFFFFF</color>
     <color name="text_color">#FFFFFFFF</color>
+
 </resources>

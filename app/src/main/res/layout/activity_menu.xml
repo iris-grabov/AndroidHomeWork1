@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:layoutDirection="ltr"
+    android:background="@color/domin_color">
+
+
+    <!-- Central Buttons Layout (Centered) -->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/central_buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/button_margin">
+
+        <TextView
+            android:id="@+id/menu_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu"
+            android:textSize="@dimen/menu_text_size"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+        <!-- First Row of Buttons -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- First Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/BTN_slow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/first_button_text"
+                android:layout_marginEnd="0dp"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_menu_size"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:backgroundTint="@android:color/white"/>
+
+            <!-- Second Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/BTN_fast"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/second_button_text"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_menu_size"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:backgroundTint="@android:color/white"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <!-- Second Row of Buttons -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="0dp">
+
+            <!-- Third Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sensors_BTN"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/sensor"
+                android:layout_marginEnd="0dp"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_menu_size"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:backgroundTint="@android:color/white"/>
+
+            <!-- Fourth Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/BTN_original"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/buttons"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_menu_size"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:backgroundTint="@android:color/white"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <!-- Below Buttons -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="vertical"
+            android:layout_below="@id/central_buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="0dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/BTN_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/go_to_record_screen"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_menu_size"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:backgroundTint="@android:color/white"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/BTN_play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/play_the_game"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_menu_size"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:backgroundTint="@android:color/white"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/main_icon"
+                android:layout_width="@dimen/image_score_size"
+                android:layout_height="@dimen/image_score_size"
+                android:src="@drawable/ic_launcher_foreground"
+                android:padding="@dimen/default_padding"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</RelativeLayout>
