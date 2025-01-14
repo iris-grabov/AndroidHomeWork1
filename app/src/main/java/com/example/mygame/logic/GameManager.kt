@@ -26,9 +26,8 @@ class GameManager (private val lifeCount: Int = 3) {
     val isGameOver: Boolean
         get() = collisions == lifeCount
 
-    fun shouldCreateObstacle(obstacleCreationInterval: Boolean): Boolean {
-        val frequency = if (obstacleCreationInterval) fast else slow // Fewer ticks for fast mode
-        return count % frequency == 0
+    fun shouldCreateObstacle(): Boolean {
+        return count % 2 == 0
     }
 
 

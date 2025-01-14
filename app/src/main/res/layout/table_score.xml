@@ -8,6 +8,17 @@
     android:orientation="vertical"
     tools:context=".TableScoreActivity">
 
+    <!-- MaterialButton at the top -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/goToMenuButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go to Menu"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/domin_color"
+        android:textColor="@android:color/white"/>
+
+    <!-- First FrameLayout -->
     <FrameLayout
         android:id="@+id/main_FRAME_list"
         android:layout_width="match_parent"
@@ -16,6 +27,8 @@
         android:background="@color/domin_color"
         android:padding="16dp"
         />
+
+    <!-- Second FrameLayout -->
     <FrameLayout
         android:id="@+id/main_FRAME_map"
         android:layout_width="match_parent"

@@ -20,7 +20,8 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBeXqYMxaInfzQBnpqLsF807Tzlh0zBMtk" />
+
+            android:value="MY_API_TO_INSERT" />
 
         <!-- MenuActivity as the Launcher Activity -->
         <activity

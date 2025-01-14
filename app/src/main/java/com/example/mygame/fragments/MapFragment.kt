@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.mygame.R
+import com.example.mygame.model.HighScore
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -13,6 +14,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.ArrayList
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -45,7 +47,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         // Focus on the first score or default to Israel
         if (scoreLocations.isNotEmpty()) {
-            focusNearFirstScore()
+//            focusNearFirstScore()
+            addMarkersAndZoomToFit()
         } else {
             showDefaultIsraelMap()
         }
@@ -58,27 +61,55 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         // If the map is already ready, update it to show the first score
         if (mapIsReady) {
-            focusNearFirstScore()
+//            focusNearFirstScore()
+            addMarkersAndZoomToFit()
         }
     }
 
-    private fun focusNearFirstScore() {
-        if (scoreLocations.isNotEmpty()) {
-            val firstScoreLocation = scoreLocations[0]
+    fun addMarkersAndZoomToFit() {
 
-            // Move camera to first score with zoom level 10
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstScoreLocation, 10f))
 
-            // Add markers for all scores
-            for (location in scoreLocations) {
-                googleMap.addMarker(
-                    MarkerOptions()
-                        .position(location)
-                        .title("Score Location")
-                )
-            }
+        // Create a LatLngBounds.Builder to include all markers
+        val boundsBuilder = LatLngBounds.Builder()
+
+        // Add markers to the map
+        scoreLocations.forEachIndexed { index, location ->
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(location)
+                    .title("Marker ${index + 1}")
+            )
+            boundsBuilder.include(location) // Include the marker's location in the bounds
         }
+
+        // Build the LatLngBounds
+        val bounds = boundsBuilder.build()
+
+        // Set padding around the bounds (in pixels)
+        val padding = 100 // Adjust as needed (e.g., 100 pixels)
+
+        // Move and animate the camera to fit the bounds
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding))
     }
+
+
+//    private fun focusNearFirstScore() {
+//        if (scoreLocations.isNotEmpty()) {
+//            val firstScoreLocation = scoreLocations[0]
+//
+//            // Move camera to first score with zoom level 10
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstScoreLocation, 10f))
+//
+//            // Add markers for all scores
+//            for (location in scoreLocations) {
+//                googleMap.addMarker(
+//                    MarkerOptions()
+//                        .position(location)
+//                        .title("Score Location")
+//                )
+//            }
+//        }
+//    }
 
     private fun showDefaultIsraelMap() {
         // Default Israel location
@@ -100,4 +131,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 .title("Location Marker")
         )
     }
+
+//    fun initialize(highScores: ArrayList<HighScore>) {
+//        for (highScore in highScores) {
+//            if (!(highScore.latitude == 0 && highScore.longitude == 0)) {
+//                val location = LatLng(highScore.latitude.toDouble(), highScore.longitude.toDouble())
+//                googleMap.addMarker(
+//                    MarkerOptions()
+//                        .position(location)
+//                        .title("${highScore.score}")
+//                )
+//            }
+//        }
+//    }
 }

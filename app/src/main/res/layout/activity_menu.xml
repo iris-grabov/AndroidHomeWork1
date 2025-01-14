@@ -111,11 +111,13 @@
             android:gravity="center"
             android:layout_marginTop="0dp">
 
+
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/BTN_record"
+                android:id="@+id/BTN_play"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/go_to_record_screen"
+                android:text="@string/play_the_game"
                 android:textAlignment="center"
                 android:textSize="@dimen/text_menu_size"
                 android:textStyle="bold"
@@ -123,10 +125,10 @@
                 app:backgroundTint="@android:color/white"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/BTN_play"
+                android:id="@+id/BTN_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/play_the_game"
+                android:text="@string/go_to_record_screen"
                 android:textAlignment="center"
                 android:textSize="@dimen/text_menu_size"
                 android:textStyle="bold"

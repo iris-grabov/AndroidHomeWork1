@@ -46,6 +46,10 @@ class MainActivity : AppCompatActivity() {
 
     private var obstacleCreationInterval = true // Default interval
     private var isButton= true // Default control mode
+    private var delay: Long = Constants.Timer.DELAY_SLOW
+
+
+
 
     override  fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +64,14 @@ class MainActivity : AppCompatActivity() {
         obstacleCreationInterval = intent.getBooleanExtra("SELECTED_SPEED", true)
         isButton = intent.getBooleanExtra("SELECTED_MODE" , true)
 
+        // Set delay based on the selected speed
+        delay = if (obstacleCreationInterval) {
+            Constants.Timer.DELAY_SLOW
+        } else {
+            Constants.Timer.DELAY_FAST // Or some other value for fast speed
+        }
+
+
         SignalManager.init(this)
         initTiltDetector()
 
@@ -68,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         initViews()
         showHarryImage(totalRows - 1, harryColumn)
 
-        startLoop()
+        startLoop(delay)
 
     }
     override fun onResume() {
@@ -129,27 +141,45 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun startLoop() {
+    private fun startLoop(delay: Long) {
+
         handler.postDelayed(object : Runnable{
             override fun run() {
                 val gameOver = refreshUI()
                 if (!gameOver) {
-                    handler.postDelayed(this, Constants.Timer.DELAY)
+                    handler.postDelayed(this, delay)
                 }
             }
-        }, Constants.Timer.DELAY)
+        }, delay)
     }
 
 
+    private var obstacleCounter = 0 // Counter for tracking obstacles
+
     private fun createObstacle() {
+        obstacleCounter++ // Increment the counter with each new obstacle
+
+        // Determine whether to show the magic hat
+        val showCoin = obstacleCounter % Constants.CoinDispaly.CoinDispalyI == 0
+
         val magicHatColumn = Random.nextInt(totalColumns)
         var coinColumn = magicHatColumn
         while (magicHatColumn == coinColumn) {
             coinColumn = Random.nextInt(totalColumns)
         }
-        showMagicHatImage(0, magicHatColumn)
-        showCoinImage(0, coinColumn)
+
+        if (showCoin) {
+            showCoinImage(0, magicHatColumn)  // Show the magic hat
+        }
+
+        showMagicHatImage(0, coinColumn)  // Always show the coin image
+
+        // Reset the counter every Constants.CoinDispaly.CoinDispalyI obstacles
+        if (obstacleCounter == Constants.CoinDispaly.CoinDispalyI) {
+            obstacleCounter = 0
+        }
     }
+
 
     private fun getCellImage(row: Int, column: Int): AppCompatImageView {
         val layout = grid.getChildAt(row) as LinearLayout
@@ -188,7 +218,7 @@ class MainActivity : AppCompatActivity() {
             return true
         }
 
-        if ( gameManager.shouldCreateObstacle(obstacleCreationInterval) ) {
+        if ( gameManager.shouldCreateObstacle() ) {
             createObstacle()
         }
         gameManager.tick()
@@ -259,7 +289,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun tiltY(y: Float) {
                     // Optionally handle vertical movement (up/down)
-                    // For now, leave it empty if you're only handling horizontal tilt
+
                 }
             }
         )

@@ -13,6 +13,7 @@ import com.example.mygame.model.HighScore
 import com.example.mygame.utilities.Constants
 import com.example.mygame.utilities.SharedPreferencesManagerV3
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textview.MaterialTextView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.ArrayList
@@ -26,10 +27,12 @@ class HighScoreFragment : Fragment() {
 //    private lateinit var highScore_BTN_send: MaterialButton
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var noRecordsTextView: MaterialTextView
 
-    var highScoreItemClicked: Callback_HighScoreItemClicked? = null
+    var mapCallback: MapCallback? = null
 
-    public interface Callback_HighScoreItemClicked {
+    public interface MapCallback {
+        fun dataInitialized(highScores: ArrayList<HighScore>)
         fun highScoreItemClicked(lat: Number, lon: Number)
     }
 
@@ -68,9 +71,15 @@ class HighScoreFragment : Fragment() {
         val itemType = object : TypeToken<ArrayList<HighScore>>() {}.type
         val highScores = gson.fromJson<ArrayList<HighScore>>(highScoresListString, itemType)
 
-        recyclerView.layoutManager = LinearLayoutManager(this.activity)
-        val adapter = HighScoreAdapter(highScores, highScoreItemClicked)
-        recyclerView.adapter = adapter
+        if (highScores.isEmpty()) {
+            noRecordsTextView.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+        } else {
+            recyclerView.layoutManager = LinearLayoutManager(this.activity)
+            val adapter = HighScoreAdapter(highScores, mapCallback)
+            recyclerView.adapter = adapter
+            mapCallback?.dataInitialized(highScores)
+        }
     }
 
     private fun itemClicked(lat: Double, lon: Double) {
@@ -81,5 +90,6 @@ class HighScoreFragment : Fragment() {
 //        highScore_ET_location = v.findViewById(R.id.highScore_ET_location)
 //        highScore_BTN_send = v.findViewById(R.id.highScore_BTN_send)
         recyclerView = v.findViewById(R.id.main_RV_list)
+        noRecordsTextView = v.findViewById(R.id.no_records_textview)
     }
 }

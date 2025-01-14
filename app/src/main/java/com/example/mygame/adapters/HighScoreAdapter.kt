@@ -14,7 +14,7 @@ import java.util.Locale
 
 class HighScoreAdapter(
     private val highScores: List<HighScore>,
-    private val highScoreItemClicked: HighScoreFragment.Callback_HighScoreItemClicked?
+    private val highScoreItemClicked: HighScoreFragment.MapCallback?
 ) : RecyclerView.Adapter<HighScoreAdapter.HighScoreViewHolder>() {
 
     // ViewHolder for each item

@@ -1,142 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/movie_CV_data"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movie_CV_data"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/data_margin"
+    android:layout_marginStart="@dimen/data_margin"
+    android:layout_marginEnd="@dimen/data_margin"
+    android:elevation="@dimen/data_default_elevation"
+    app:cardCornerRadius="@dimen/default_corner_radius"
+    app:cardElevation="@dimen/data_default_elevation"
+    >
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/data_margin"
-        android:layout_marginStart="@dimen/data_start_margin"
-        android:layout_marginEnd="@dimen/data_margin"
-        android:elevation="@dimen/data_default_elevation"
-        app:cardCornerRadius="@dimen/default_corner_radius"
-        app:cardElevation="@dimen/data_default_elevation"
-        >
-
+        android:orientation="horizontal">
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/score_index"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="@dimen/data_margin"
-            android:layout_marginTop="@dimen/data_margin"
             android:maxLines="2"
             android:minLines="2"
-            android:textSize="@dimen/movie_title_size"
+            android:textSize="30dp"
             android:textStyle="bold"
+            android:gravity="center"
             tools:text="1" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="@dimen/data_start_margin"
-            android:layout_marginEnd="@dimen/data_margin">
+            android:layout_centerInParent="true"
+            >
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/score_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:maxLines="2"
+                    android:minLines="2"
+                    android:textSize="@dimen/movie_title_size"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal|center_vertical"
+                    tools:text="100"
+                    />
 
-<!--            <androidx.appcompat.widget.AppCompatImageView-->
-<!--                android:id="@+id/movie_IMG_favorite"-->
-<!--                android:layout_width="@dimen/heart_dimension"-->
-<!--                android:layout_height="@dimen/heart_dimension"-->
-<!--                android:layout_alignParentTop="true"-->
-<!--                android:layout_alignParentEnd="true"-->
-<!--                android:layout_marginTop="@dimen/data_margin"-->
-<!--                android:layout_marginEnd="@dimen/data_margin"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                app:srcCompat="@drawable/life" />-->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/score_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:textSize="11sp"
+                    android:gravity="center_horizontal|center_vertical"
+                    tools:text="2025-01-01" />
+            </LinearLayout>
+    </LinearLayout>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/score_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="@dimen/data_margin"
-                android:layout_marginTop="@dimen/data_margin"
-                android:maxLines="2"
-                android:minLines="2"
-                android:textSize="@dimen/movie_title_size"
-                android:textStyle="bold"
-                tools:text="100" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/score_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/data_margin"
-                android:layout_marginEnd="@dimen/data_margin"
-                android:maxLines="1"
-                android:minLines="1"
-                android:textSize="11sp"
-                tools:text="2025-01-01" />
-
-<!--            <com.google.android.material.textview.MaterialTextView-->
-<!--                android:id="@+id/movie_LBL_duration"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/movie_LBL_title"-->
-<!--                android:layout_alignEnd="@id/movie_IMG_favorite"-->
-<!--                android:layout_marginTop="@dimen/data_margin"-->
-<!--                android:maxLines="1"-->
-<!--                android:minLines="1"-->
-<!--                android:textSize="11sp"-->
-<!--                tools:text="00h 00m" />-->
-
-<!--            <com.google.android.material.textview.MaterialTextView-->
-<!--                android:id="@+id/movie_LBL_genres"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/move_LBL_release_date"-->
-<!--                android:layout_alignStart="@id/movie_LBL_title"-->
-<!--                android:layout_marginTop="@dimen/data_margin"-->
-<!--                android:layout_marginEnd="@dimen/data_margin"-->
-<!--                android:minLines="1"-->
-<!--                android:maxLines="1"-->
-<!--                android:textSize="11sp"-->
-<!--                tools:text="Action, Comedy, Drama, Family..." />-->
-
-<!--            <com.google.android.material.textview.MaterialTextView-->
-<!--                android:id="@+id/movie_LBL_actors"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/movie_LBL_genres"-->
-<!--                android:layout_alignStart="@id/movie_LBL_title"-->
-<!--                android:layout_marginTop="@dimen/data_margin"-->
-<!--                android:layout_marginEnd="@dimen/data_margin"-->
-<!--                android:minLines="1"-->
-<!--                android:maxLines="1"-->
-<!--                android:textSize="11sp"-->
-<!--                tools:text="Actor name1, Actor name2, Actress name1..." />-->
-
-<!--            <com.google.android.material.textview.MaterialTextView-->
-<!--                android:id="@+id/movie_LBL_overview"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/movie_LBL_actors"-->
-<!--                android:layout_alignStart="@id/movie_LBL_title"-->
-<!--                android:layout_marginTop="@dimen/data_margin"-->
-<!--                android:layout_marginEnd="@dimen/data_margin"-->
-<!--                android:minLines="1"-->
-<!--                android:maxLines="3"-->
-<!--                android:textSize="11dp"-->
-<!--                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel dolor auctor, bibendum lectus sit amet, bibendum velit. Nunc euismod, odio eget eleifend aliquet, nibh nibh malesuada risus, vel pretium nunc eros at elit. Donec finibus ultrices quam a luctus. Curabitur lobortis massa id sapien aliquam, id congue mi lobortis. Fusce id aliquam ante. Nullam congue velit ac bibendum eleifend. Nulla quis gravida odio, vel rutrum risus. Ut tincidunt, justo in fermentum bibendum, mauris mauris malesuada metus, ut eleifend augue lectus ut ex. Nam ut mollis ante." />-->
-
-
-<!--            <androidx.appcompat.widget.AppCompatRatingBar-->
-<!--                android:id="@+id/movie_RB_rating"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/movie_LBL_overview"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginVertical="@dimen/data_margin"-->
-<!--                android:progressTint="@color/domin_color"-->
-<!--                android:secondaryProgressTint="@color/domin_color"-->
-<!--                android:stepSize="1"-->
-<!--                tools:rating="3.7"-->
-<!--                android:isIndicator="true"-->
-<!--                />-->
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+</androidx.cardview.widget.CardView>

@@ -1,18 +1,20 @@
 package com.example.mygame
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.mygame.model.HighScore
-import com.google.android.material.textview.MaterialTextView
 import com.example.mygame.utilities.Constants
 import com.example.mygame.utilities.DataManager
 import com.example.mygame.utilities.SharedPreferencesManagerV3
+import com.google.android.material.textview.MaterialTextView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
@@ -45,6 +47,13 @@ class ScoreActivity : AppCompatActivity() {
 
         findViews()
         initViews()
+
+        // Delay the transition to TableScoreActivity by 1 second
+        Handler().postDelayed({
+            val intent = Intent(this, TableScoreActivity::class.java)
+            startActivity(intent)
+            finish() // Close the current activity to prevent going back
+        }, 1000) // 1000 milliseconds = 1 second
     }
 
     private fun findViews() {
@@ -114,5 +123,4 @@ class ScoreActivity : AppCompatActivity() {
             }
         }
     }
-
 }
