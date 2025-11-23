@@ -6,7 +6,7 @@ You have to insert your API in the manifest file:
             android:value="MY_API_TO_INSERT" />
 
 !!!!!!!!!
----
+
 
 # Game Project
 
@@ -37,7 +37,7 @@ Added logo- icon
   - The player can navigate back to the main menu from this activity.
   - Clicking on a record will update the location display- zoom it.
 
----
+
 
 ## Project Structure
 
@@ -52,10 +52,7 @@ Added logo- icon
 3. **TableScoreActivity**: 
    Displays a map of  high scores and a list of the 10 top scores. This activity also includes a button to return to the main menu.
 
----
 
-
----
 
 
 ## How to Play
@@ -77,4 +74,5 @@ Added logo- icon
 5. **High Scores**: 
    - After the game ends, you can check your score on the high score table and view a map of high scores from other players and zoom.
 
----
+
+
